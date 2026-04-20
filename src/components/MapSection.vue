@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import DashboardCard from '@/components/DashboardCard.vue'
 import ActionBtn from '@/components/ActionBtn.vue'
 
 const activeFilter = ref('All')
 const filters = ['All', 'In Transit', 'Delayed', 'Delivered']
+
+const filterMap: Record<string, string> = {
+  'In Transit': 'transit',
+  'Delayed': 'delayed',
+  'Delivered': 'delivered',
+}
 
 interface Dot {
   top: string
@@ -23,6 +29,12 @@ const dots: Dot[] = [
   { top: '25%', left: '14%', info: 'SEA → DEN | ETA: 4h', status: 'transit' },
   { top: '42%', left: '44%', info: 'CAI → JNB | DELAYED', status: 'delayed' },
 ]
+
+const filteredDots = computed(() => {
+  if (activeFilter.value === 'All') return dots
+  const status = filterMap[activeFilter.value]
+  return dots.filter(d => d.status === status)
+})
 
 const tooltipText = ref('')
 const tooltipStyle = ref({ left: '0px', top: '0px', opacity: '0' })
@@ -80,16 +92,18 @@ function hideTooltip() {
         <path class="map-land" d="M640,160 L690,155 L710,180 L700,210 L670,220 L645,200 L635,175 Z" />
         <path class="map-land" d="M680,300 L760,290 L800,310 L810,360 L790,400 L750,410 L700,395 L675,360 L670,320 Z" />
       </svg>
-      <div
-        v-for="(dot, i) in dots"
-        :key="i"
-        class="shipment-dot"
-        :class="{ delayed: dot.status === 'delayed', delivered: dot.status === 'delivered' }"
-        :style="{ top: dot.top, left: dot.left }"
-        @mouseenter="showTooltip($event, dot.info)"
-        @mousemove="moveTooltip"
-        @mouseleave="hideTooltip"
-      ></div>
+      <TransitionGroup name="dot">
+        <div
+          v-for="(dot, i) in filteredDots"
+          :key="dot.info"
+          class="shipment-dot"
+          :class="{ delayed: dot.status === 'delayed', delivered: dot.status === 'delivered' }"
+          :style="{ top: dot.top, left: dot.left }"
+          @mouseenter="showTooltip($event, dot.info)"
+          @mousemove="moveTooltip"
+          @mouseleave="hideTooltip"
+        ></div>
+      </TransitionGroup>
       <div class="map-tooltip" :style="tooltipStyle">{{ tooltipText }}</div>
     </div>
 
@@ -169,4 +183,7 @@ function hideTooltip() {
 .legend-dot.primary-bg { background: rgb(var(--v-theme-primary)); }
 .legend-dot.warning-bg { background: rgb(var(--v-theme-warning)); }
 .legend-dot.success-bg { background: rgb(var(--v-theme-success)); }
+
+.dot-enter-active, .dot-leave-active { transition: opacity 0.3s ease, transform 0.3s ease; }
+.dot-enter-from, .dot-leave-to { opacity: 0; transform: translate(-50%, -50%) scale(0); }
 </style>

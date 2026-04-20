@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import ActionBtn from '@/components/ActionBtn.vue'
 
 const rail = ref(false)
-const activeSection = ref('dashboard')
+const route = useRoute()
+const router = useRouter()
 
 const navItems = [
-  { id: 'dashboard', icon: 'mdi-gauge', label: 'Dashboard' },
-  { id: 'shipments', icon: 'mdi-package-variant-closed', label: 'Shipments' },
-  { id: 'tracking', icon: 'mdi-map-marker-radius', label: 'Live Tracking' },
-  { id: 'performance', icon: 'mdi-chart-line', label: 'Performance' },
-  { id: 'regions', icon: 'mdi-earth', label: 'Regions' },
-  { id: 'exceptions', icon: 'mdi-alert', label: 'Exceptions' },
-  { id: 'reports', icon: 'mdi-file-document-outline', label: 'Reports' },
-  { id: 'settings', icon: 'mdi-cog', label: 'Settings' },
+  { to: '/', icon: 'mdi-gauge', label: 'Dashboard' },
+  { to: '/exceptions', icon: 'mdi-alert', label: 'Exceptions' },
+  { to: '/settings', icon: 'mdi-cog', label: 'Settings' },
 ]
 </script>
 
@@ -40,13 +37,13 @@ const navItems = [
     <v-list density="compact" nav>
       <v-list-item
         v-for="item in navItems"
-        :key="item.id"
+        :key="item.to"
         :prepend-icon="item.icon"
         :title="item.label"
-        :active="activeSection === item.id"
+        :to="item.to"
         color="primary"
         rounded="lg"
-        @click="activeSection = item.id"
+        exact
       />
     </v-list>
 

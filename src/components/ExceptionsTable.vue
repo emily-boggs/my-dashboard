@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import DashboardCard from '@/components/DashboardCard.vue'
 import ActionBtn from '@/components/ActionBtn.vue'
 import StatusChip from '@/components/StatusChip.vue'
+
+const router = useRouter()
 
 interface Exception {
   id: string
@@ -27,15 +30,31 @@ const chipColors: Record<string, string> = {
   low: 'success',
 }
 
-function resolve(id: string) {
-  exceptions.value = exceptions.value.filter(e => e.id !== id)
+// Resolve dialog
+const resolveDialog = ref(false)
+const resolveTarget = ref<Exception | null>(null)
+const resolveNote = ref('')
+
+function openResolve(exc: Exception) {
+  resolveTarget.value = exc
+  resolveNote.value = ''
+  resolveDialog.value = true
+}
+
+function confirmResolve() {
+  if (resolveTarget.value) {
+    exceptions.value = exceptions.value.filter(e => e.id !== resolveTarget.value!.id)
+  }
+  resolveDialog.value = false
+  resolveTarget.value = null
+  resolveNote.value = ''
 }
 </script>
 
 <template>
   <DashboardCard title="Open Exceptions" icon="mdi-alert" icon-color="warning">
     <template #actions>
-      <ActionBtn append-icon="mdi-arrow-right">View All</ActionBtn>
+      <ActionBtn append-icon="mdi-arrow-right" @click="router.push('/exceptions')">View All</ActionBtn>
     </template>
     <template #raw>
     <v-table density="comfortable" hover>
@@ -63,7 +82,7 @@ function resolve(id: string) {
             </StatusChip>
           </td>
           <td>
-            <ActionBtn prepend-icon="mdi-pencil" @click="resolve(exc.id)">
+            <ActionBtn prepend-icon="mdi-pencil" @click="openResolve(exc)">
               Resolve
             </ActionBtn>
           </td>
@@ -72,6 +91,36 @@ function resolve(id: string) {
     </v-table>
     </template>
   </DashboardCard>
+
+  <!-- Resolve Dialog -->
+  <v-dialog v-model="resolveDialog" max-width="480" persistent>
+    <v-card>
+      <v-card-title class="d-flex align-center ga-2 pt-4">
+        <v-icon color="primary">mdi-check-circle</v-icon>
+        Resolve Exception
+      </v-card-title>
+      <v-card-text>
+        <div v-if="resolveTarget" class="text-caption text-medium-emphasis mb-3">
+          Resolving <strong class="text-primary">{{ resolveTarget.id }}</strong>
+          — {{ resolveTarget.type }} ({{ resolveTarget.origin }} → {{ resolveTarget.dest }})
+        </div>
+        <v-textarea
+          v-model="resolveNote"
+          label="Resolution note"
+          placeholder="Describe how this exception was resolved..."
+          rows="3"
+          variant="outlined"
+          density="comfortable"
+          auto-grow
+        />
+      </v-card-text>
+      <v-card-actions class="px-4 pb-4">
+        <v-spacer />
+        <v-btn variant="text" @click="resolveDialog = false">Cancel</v-btn>
+        <v-btn color="primary" variant="flat" prepend-icon="mdi-check" @click="confirmResolve">Resolve</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

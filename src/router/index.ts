@@ -9,6 +9,16 @@ const router = createRouter({
       name: 'dashboard',
       component: DashboardView,
     },
+    {
+      path: '/exceptions',
+      name: 'exceptions',
+      component: () => import('../views/ExceptionsView.vue'),
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../views/SettingsView.vue'),
+    },
   ],
 })
 
