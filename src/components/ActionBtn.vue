@@ -1,7 +1,7 @@
 <script setup lang="ts">
 withDefaults(defineProps<{
   size?: 'x-small' | 'small'
-  icon?: string
+  icon?: string | boolean
   prependIcon?: string
   appendIcon?: string
   variant?: 'outlined' | 'flat'
