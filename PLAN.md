@@ -1,0 +1,1 @@
+create a new vue project for me, use the create-view scaffolding tool with Vite. Turn on typescript and vue router. say no to pinia, testing, jsx, eslint, and prettifier. run the commands in the terminal for me
