@@ -1,0 +1,168 @@
+/* =========================================
+   FastForward Logistics – Global Styles
+   ========================================= */
+
+:root {
+  --font: 'Open Sans', sans-serif;
+  --sidebar-w: 240px;
+  --sidebar-collapsed-w: 64px;
+  --transition: 0.25s ease;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+/* Dark mode (default) */
+[data-theme="dark"] {
+  --bg: #0e1117;
+  --bg-2: #161b25;
+  --bg-3: #1e2635;
+  --border: rgba(255,255,255,0.07);
+  --text: #e8eaf0;
+  --text-muted: #8a93a8;
+  --teal: #2dd4bf;
+  --teal-dim: rgba(45,212,191,0.15);
+  --blue: #38bdf8;
+  --green: #4ade80;
+  --orange: #fb923c;
+  --red: #f87171;
+  --card-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --gradient-bg: linear-gradient(135deg, #0e1117 0%, #161b25 50%, #0e1117 100%);
+  --map-land: #2a3347;
+  --map-water: #111827;
+  --sidebar-bg: #0b0f18;
+  --topbar-bg: rgba(14,17,23,0.85);
+}
+
+/* Light mode */
+[data-theme="light"] {
+  --bg: #f0f4f8;
+  --bg-2: #ffffff;
+  --bg-3: #e8edf4;
+  --border: rgba(0,0,0,0.09);
+  --text: #0d1117;
+  --text-muted: #5a6478;
+  --teal: #0d9488;
+  --teal-dim: rgba(13,148,136,0.12);
+  --blue: #0284c7;
+  --green: #16a34a;
+  --orange: #ea580c;
+  --red: #dc2626;
+  --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --gradient-bg: linear-gradient(135deg, #e8edf4 0%, #f0f4f8 50%, #dce6f0 100%);
+  --map-land: #b0c4d8;
+  --map-water: #d8e6f2;
+  --sidebar-bg: #0d1b2e;
+  --topbar-bg: rgba(240,244,248,0.9);
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: var(--gradient-bg);
+  background-attachment: fixed;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* Animated background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 20%, var(--teal-dim) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, rgba(56,189,248,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  animation: bgPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulse {
+  from { opacity: 0.6; }
+  to   { opacity: 1; }
+}
+
+/* Shared button styles */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: color var(--transition), border-color var(--transition), background var(--transition), transform 0.15s ease, box-shadow var(--transition);
+  white-space: nowrap;
+}
+
+.btn-outline:hover {
+  color: var(--teal);
+  border-color: var(--teal);
+  background: var(--teal-dim);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(45,212,191,0.15);
+}
+
+.btn-outline.active {
+  color: var(--teal);
+  border-color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.btn-outline.small { padding: 5px 10px; font-size: 0.75rem; }
+
+/* Badge dots */
+.legend-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.legend-dot.teal   { background: var(--teal); }
+.legend-dot.green  { background: var(--green); }
+.legend-dot.orange { background: var(--orange); }
+
+/* Badge pills */
+.badge-pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 1px solid transparent;
+}
+.badge-pill.high   { background: rgba(248,113,113,0.12); color: var(--red);    border-color: rgba(248,113,113,0.25); }
+.badge-pill.medium { background: rgba(251,146,60,0.12);  color: var(--orange); border-color: rgba(251,146,60,0.25); }
+.badge-pill.low    { background: rgba(74,222,128,0.12);  color: var(--green);  border-color: rgba(74,222,128,0.25); }
+
+/* Section header reusable */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-header h2 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
