@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import DashboardCard from '@/components/DashboardCard.vue'
+import ActionBtn from '@/components/ActionBtn.vue'
 
 const activeFilter = ref('All')
 const filters = ['All', 'In Transit', 'Delayed', 'Delivered']
@@ -52,19 +54,21 @@ function hideTooltip() {
 </script>
 
 <template>
-  <div class="map-container">
-    <div class="map-header">
-      <span><i class="fa-solid fa-satellite-dish"></i> Live Shipment Tracking</span>
-      <div class="map-controls">
-        <button
+  <DashboardCard title="Live Shipment Tracking" icon="mdi-satellite-uplink">
+    <template #actions>
+      <div class="d-flex ga-1">
+        <ActionBtn
           v-for="f in filters"
           :key="f"
-          class="btn-outline small"
-          :class="{ active: activeFilter === f }"
+          :variant="activeFilter === f ? 'flat' : 'outlined'"
+          :color="activeFilter === f ? 'primary' : undefined"
           @click="activeFilter = f"
-        >{{ f }}</button>
+        >{{ f }}</ActionBtn>
       </div>
-    </div>
+    </template>
+
+    <template #raw>
+
     <div class="map-canvas">
       <svg class="map-svg" viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg">
         <path class="map-land" d="M80,60 L200,50 L260,80 L280,140 L260,180 L230,200 L200,220 L160,240 L120,230 L90,200 L70,160 L60,120 Z" />
@@ -88,55 +92,34 @@ function hideTooltip() {
       ></div>
       <div class="map-tooltip" :style="tooltipStyle">{{ tooltipText }}</div>
     </div>
-    <div class="map-legend">
-      <span><span class="legend-dot teal"></span>In Transit</span>
-      <span><span class="legend-dot orange"></span>Delayed</span>
-      <span><span class="legend-dot green"></span>Delivered</span>
+
+    <v-divider />
+
+    <div class="d-flex ga-5 pa-3 text-caption text-medium-emphasis">
+      <span class="d-flex align-center ga-1"><span class="legend-dot primary-bg"></span>In Transit</span>
+      <span class="d-flex align-center ga-1"><span class="legend-dot warning-bg"></span>Delayed</span>
+      <span class="d-flex align-center ga-1"><span class="legend-dot success-bg"></span>Delivered</span>
     </div>
-  </div>
+    </template>
+  </DashboardCard>
 </template>
 
 <style scoped>
-.map-container {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--card-shadow);
-  display: flex;
-  flex-direction: column;
-}
-.map-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text);
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.map-header i { color: var(--teal); margin-right: 6px; }
-.map-controls { display: flex; gap: 6px; }
-
 .map-canvas {
   position: relative;
-  background: var(--map-water);
-  flex: 1;
+  background: rgb(var(--v-theme-surface-variant));
   min-height: 300px;
   overflow: hidden;
 }
 .map-svg { width: 100%; height: 100%; display: block; }
-.map-land { fill: var(--map-land); stroke: var(--border); stroke-width: 0.5; }
+.map-land { fill: rgba(var(--v-theme-primary), 0.15); stroke: rgba(var(--v-border-color), var(--v-border-opacity)); stroke-width: 0.5; }
 
 .shipment-dot {
   position: absolute;
   width: 10px; height: 10px;
   border-radius: 50%;
-  background: var(--teal);
-  border: 2px solid var(--bg);
+  background: rgb(var(--v-theme-primary));
+  border: 2px solid rgb(var(--v-theme-background));
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 5;
@@ -147,13 +130,13 @@ function hideTooltip() {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 1.5px solid var(--teal);
+  border: 1.5px solid rgb(var(--v-theme-primary));
   animation: ripple 2s ease-out infinite;
 }
-.shipment-dot.delayed { background: var(--orange); }
-.shipment-dot.delayed::after { border-color: var(--orange); }
-.shipment-dot.delivered { background: var(--green); animation: none; }
-.shipment-dot.delivered::after { border-color: var(--green); animation: none; }
+.shipment-dot.delayed { background: rgb(var(--v-theme-warning)); }
+.shipment-dot.delayed::after { border-color: rgb(var(--v-theme-warning)); }
+.shipment-dot.delivered { background: rgb(var(--v-theme-success)); animation: none; }
+.shipment-dot.delivered::after { border-color: rgb(var(--v-theme-success)); animation: none; }
 
 @keyframes dotPulse {
   0%, 100% { transform: translate(-50%,-50%) scale(1); }
@@ -166,26 +149,24 @@ function hideTooltip() {
 
 .map-tooltip {
   position: absolute;
-  background: var(--bg-3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  background: rgb(var(--v-theme-surface));
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-radius: 6px;
   padding: 6px 10px;
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text);
   pointer-events: none;
   white-space: nowrap;
   transition: opacity 0.15s;
   z-index: 20;
 }
 
-.map-legend {
-  display: flex;
-  gap: 20px;
-  padding: 10px 18px;
-  border-top: 1px solid var(--border);
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  flex-wrap: wrap;
+.legend-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
 }
+.legend-dot.primary-bg { background: rgb(var(--v-theme-primary)); }
+.legend-dot.warning-bg { background: rgb(var(--v-theme-warning)); }
+.legend-dot.success-bg { background: rgb(var(--v-theme-success)); }
 </style>

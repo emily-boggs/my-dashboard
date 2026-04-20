@@ -25,8 +25,9 @@ and respond to exceptions quickly.
 
 ## Tech
 
-- Pure HTML, CSS, and JavaScript — no frameworks, no build tools
-- Single `index.html` file (CSS and JS can be separate files)
+- Vue 3 with TypeScript, Vite build tool
+- Vuetify 3 component library with Material Design Icons
+- Vue Router (single-route SPA)
 - Deploys to Vercel as a static site
 - Mock / static data for MVP
 - No authentication required
@@ -51,7 +52,7 @@ and respond to exceptions quickly.
 
 - Thin button outlines
 - Subtle gradient or animated background
-- Link buttons have icons (use Font Awesome)
+- Link buttons have icons (use Material Design Icons)
 - Footer with "Made with Todd's Video Instructions and Copilot"
 
 ---

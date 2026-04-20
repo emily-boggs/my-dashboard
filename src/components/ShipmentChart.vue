@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import DashboardCard from '@/components/DashboardCard.vue'
 
 const barData = [
   { day: 'Mon', value: 1620 },
@@ -22,34 +23,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="chart-section">
-    <div class="section-header">
-      <h2><i class="fa-solid fa-chart-bar"></i> Shipment Volume – Last 7 Days</h2>
-    </div>
-    <div class="bar-chart-wrap">
+  <DashboardCard title="Shipment Volume – Last 7 Days" icon="mdi-chart-bar" icon-color="info">
       <div class="bar-chart">
         <div v-for="(d, i) in barData" :key="d.day" class="bar-col">
           <div class="bar-fill" :style="{ height: heights[i] }" :data-value="d.value.toLocaleString()"></div>
-          <div class="bar-label">{{ d.day }}</div>
+          <div class="text-caption text-medium-emphasis mt-1">{{ d.day }}</div>
         </div>
       </div>
-    </div>
-  </section>
+  </DashboardCard>
 </template>
 
 <style scoped>
-.chart-section {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--card-shadow);
-  overflow: hidden;
-  padding-bottom: 20px;
-}
-.chart-section .section-header { border-bottom: 1px solid var(--border); }
-.chart-section .section-header h2 i { color: var(--blue); }
-
-.bar-chart-wrap { padding: 20px 28px 10px; }
 .bar-chart {
   display: flex;
   align-items: flex-end;
@@ -67,9 +51,9 @@ onMounted(() => {
 }
 .bar-fill {
   width: 100%;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  background: linear-gradient(180deg, var(--teal), var(--blue));
-  transition: height 1s ease, opacity var(--transition);
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, rgb(var(--v-theme-primary)), rgb(var(--v-theme-secondary)));
+  transition: height 1s ease, opacity 0.25s ease;
   cursor: pointer;
   min-height: 4px;
   position: relative;
@@ -83,18 +67,10 @@ onMounted(() => {
   transform: translateX(-50%);
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--text);
   opacity: 0;
-  transition: opacity var(--transition);
+  transition: opacity 0.25s ease;
   white-space: nowrap;
   pointer-events: none;
 }
 .bar-fill:hover::after { opacity: 1; }
-
-.bar-label {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  margin-top: 6px;
-  text-align: center;
-}
 </style>

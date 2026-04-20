@@ -1,28 +1,15 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import SideBar from '@/components/SideBar.vue'
+import TopBar from '@/components/TopBar.vue'
 </script>
 
 <template>
-  <SideBar />
-  <main class="main-content">
-    <RouterView />
-  </main>
+  <v-app>
+    <SideBar />
+    <TopBar />
+    <v-main>
+      <RouterView />
+    </v-main>
+  </v-app>
 </template>
-
-<style scoped>
-.main-content {
-  margin-left: var(--sidebar-w);
-  flex: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  transition: margin-left var(--transition);
-  position: relative;
-  z-index: 1;
-}
-
-@media (max-width: 768px) {
-  .main-content { margin-left: var(--sidebar-collapsed-w); }
-}
-</style>
