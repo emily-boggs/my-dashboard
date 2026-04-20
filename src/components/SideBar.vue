@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import ActionBtn from '@/components/ActionBtn.vue'
 
-const rail = ref(false)
+const hovered = ref(false)
 const route = useRoute()
 const router = useRouter()
 
@@ -16,25 +15,23 @@ const navItems = [
 
 <template>
   <v-navigation-drawer
-    :rail="rail"
+    :rail="!hovered"
     permanent
-    color="background"
-    class="sidebar-drawer"
+    class="glass-sidebar"
+    @mouseenter="hovered = true"
+    @mouseleave="hovered = false"
+    style="transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);"
   >
-    <div class="d-flex align-center justify-space-between pa-4">
-      <div class="d-flex align-center ga-2">
-        <v-icon color="primary" size="24">mdi-truck-fast</v-icon>
-        <span v-show="!rail" class="text-subtitle-2 font-weight-bold text-primary">FastForward</span>
-      </div>
-      <ActionBtn
-        :icon="rail ? 'mdi-menu' : 'mdi-menu-open'"
-        @click="rail = !rail"
-      />
+    <div class="d-flex align-center pa-4 ga-2" style="height: 56px;">
+      <v-icon color="primary" size="24">mdi-truck-fast</v-icon>
+      <Transition name="fade">
+        <span v-show="hovered" class="text-subtitle-2 font-weight-bold text-primary" style="white-space: nowrap;">FastForward</span>
+      </Transition>
     </div>
 
-    <v-divider />
+    <v-divider style="opacity: 0.08;" />
 
-    <v-list density="compact" nav>
+    <v-list density="compact" nav class="mt-1">
       <v-list-item
         v-for="item in navItems"
         :key="item.to"
@@ -48,16 +45,18 @@ const navItems = [
     </v-list>
 
     <template #append>
-      <v-divider />
+      <v-divider style="opacity: 0.08;" />
       <div class="pa-3">
         <div class="d-flex align-center ga-3">
           <v-avatar size="32" color="primary" variant="tonal">
             <v-icon size="18">mdi-account</v-icon>
           </v-avatar>
-          <div v-show="!rail">
-            <div class="text-caption font-weight-bold">Emily Boggs</div>
-            <div class="text-caption text-medium-emphasis">Logistics Manager</div>
-          </div>
+          <Transition name="fade">
+            <div v-show="hovered">
+              <div class="text-caption font-weight-bold">Emily Boggs</div>
+              <div class="text-caption text-medium-emphasis">Logistics Manager</div>
+            </div>
+          </Transition>
         </div>
       </div>
     </template>
@@ -65,7 +64,6 @@ const navItems = [
 </template>
 
 <style scoped>
-.sidebar-drawer {
-  border-right: 1px solid rgba(var(--v-border-color), var(--v-border-opacity)) !important;
-}
+.fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>

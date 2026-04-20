@@ -68,8 +68,8 @@ function confirmResolve() {
     <div class="d-flex align-center ga-3 mb-4">
       <v-icon color="warning" size="28">mdi-alert</v-icon>
       <div>
-        <div class="text-h6 font-weight-bold">Exceptions</div>
-        <div class="text-caption text-medium-emphasis">All open and resolved shipment exceptions</div>
+        <div class="text-h5 font-weight-bold" style="letter-spacing: -0.01em;">Exceptions</div>
+        <div class="text-body-2 text-medium-emphasis">All open and resolved shipment exceptions</div>
       </div>
     </div>
 
@@ -117,7 +117,7 @@ function confirmResolve() {
 
     <!-- Resolve Dialog -->
     <v-dialog v-model="resolveDialog" max-width="480" persistent>
-      <v-card>
+      <v-card class="glass-card">
         <v-card-title class="d-flex align-center ga-2 pt-4">
           <v-icon color="primary">mdi-check-circle</v-icon>
           Resolve Exception

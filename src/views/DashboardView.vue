@@ -35,8 +35,7 @@ import ShipmentChart from '@/components/ShipmentChart.vue'
       </v-col>
     </v-row>
 
-    <div class="text-center text-caption text-medium-emphasis mt-6 pt-4" style="border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));">
-      Made with <v-icon color="primary" size="14">mdi-heart</v-icon> Todd's Video Instructions and Copilot
+    <div class="text-center text-caption text-medium-emphasis mt-6 pt-4" style="border-top: 1px solid rgba(var(--v-border-color), 0.06);">      Made with <v-icon color="primary" size="14">mdi-heart</v-icon> Todd's Video Instructions and Copilot
     </div>
   </v-container>
 </template>

@@ -34,9 +34,9 @@ function markAllRead() {
 </script>
 
 <template>
-  <v-app-bar flat color="surface" border="b">
+  <v-app-bar flat class="glass-bar" border="b" style="border-color: rgba(var(--v-border-color), 0.06) !important;">
     <div class="ml-4">
-      <div class="text-subtitle-1 font-weight-bold">Dashboard Overview</div>
+      <div class="text-h6 font-weight-bold" style="letter-spacing: -0.01em;">Dashboard Overview</div>
       <div class="text-caption text-medium-emphasis">FastForward Logistics — April 20, 2026</div>
     </div>
 
@@ -58,7 +58,7 @@ function markAllRead() {
         </ActionBtn>
       </template>
 
-      <v-card width="360" variant="outlined">
+      <v-card width="360" variant="flat" class="glass-card">
         <v-card-title class="d-flex align-center justify-space-between py-2 px-4" style="font-size: 0.85rem;">
           Notifications
           <v-btn variant="text" size="x-small" color="primary" @click="markAllRead">Mark all read</v-btn>

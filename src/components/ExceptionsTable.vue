@@ -94,7 +94,7 @@ function confirmResolve() {
 
   <!-- Resolve Dialog -->
   <v-dialog v-model="resolveDialog" max-width="480" persistent>
-    <v-card>
+    <v-card class="glass-card">
       <v-card-title class="d-flex align-center ga-2 pt-4">
         <v-icon color="primary">mdi-check-circle</v-icon>
         Resolve Exception

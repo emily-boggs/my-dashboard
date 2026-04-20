@@ -56,14 +56,14 @@ const deltaColors: Record<string, string> = {
 <template>
   <v-row>
     <v-col v-for="(stat, i) in stats" :key="stat.label" cols="12" sm="6" lg="3">
-      <v-card variant="outlined" hover class="pa-4">
+      <v-card variant="flat" hover class="glass-card pa-4">
         <div class="d-flex align-center ga-4">
           <v-avatar :color="stat.color" variant="tonal" size="46" rounded="lg">
             <v-icon size="22">{{ stat.icon }}</v-icon>
           </v-avatar>
           <div>
-            <div class="text-overline text-medium-emphasis" style="line-height: 1.2">{{ stat.label }}</div>
-            <div class="text-h5 font-weight-bold">{{ displayed[i] }}</div>
+            <div class="text-caption text-uppercase text-medium-emphasis font-weight-medium" style="line-height: 1.2; letter-spacing: 0.06em;">{{ stat.label }}</div>
+            <div class="text-h4 font-weight-bold" style="letter-spacing: -0.02em;">{{ displayed[i] }}</div>
             <div class="d-flex align-center ga-1" :class="`text-${deltaColors[stat.deltaType]}`" style="font-size: 0.72rem;">
               <v-icon size="14">{{ deltaIcons[stat.deltaType] }}</v-icon>
               {{ stat.delta }}
