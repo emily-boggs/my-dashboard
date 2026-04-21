@@ -52,3 +52,41 @@ body::before {
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   border-right: 1px solid rgba(var(--v-border-color), 0.06) !important;
 }
+
+/* ── Button overrides ── */
+.v-btn:not(.v-tab) {
+  border-radius: 9999px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  padding: 16px 16px !important;
+  border: 1px solid rgba(var(--v-theme-primary), 0.5) !important;
+}
+.v-btn.v-btn--variant-flat:not(.v-tab),
+.v-btn.v-btn--variant-flat:not(.v-tab) .v-btn__content {
+  color: #0e1117 !important;
+}
+.v-btn.v-btn--variant-tonal:not(.v-tab),
+.v-btn.v-btn--variant-tonal:not(.v-tab) .v-btn__content {
+  background: transparent !important;
+  color: #fff !important;
+}
+.v-btn.v-btn--variant-tonal:not(.v-tab) .v-btn__underlay {
+  opacity: 0 !important;
+}
+.v-btn.v-btn--variant-outlined:not(.v-tab),
+.v-btn.v-btn--variant-outlined:not(.v-tab) .v-btn__content {
+  background: transparent !important;
+  color: #fff !important;
+}
+
+/* Light mode: tonal/outlined buttons need dark text */
+.v-theme--light .v-btn.v-btn--variant-tonal:not(.v-tab),
+.v-theme--light .v-btn.v-btn--variant-tonal:not(.v-tab) .v-btn__content {
+  color: #1a1a2e !important;
+}
+.v-theme--light .v-btn.v-btn--variant-outlined:not(.v-tab),
+.v-theme--light .v-btn.v-btn--variant-outlined:not(.v-tab) .v-btn__content {
+  color: #1a1a2e !important;
+}

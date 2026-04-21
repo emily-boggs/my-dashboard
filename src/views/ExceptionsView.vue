@@ -66,7 +66,7 @@ function confirmResolve() {
 <template>
   <v-container fluid class="pa-6">
     <div class="d-flex align-center ga-3 mb-4">
-      <v-icon color="warning" size="28">mdi-alert</v-icon>
+      <v-icon color="warning" size="28">mdi-alert-circle-outline</v-icon>
       <div>
         <div class="text-h5 font-weight-bold" style="letter-spacing: -0.01em;">Exceptions</div>
         <div class="text-body-2 text-medium-emphasis">All open and resolved shipment exceptions</div>
@@ -80,6 +80,7 @@ function confirmResolve() {
 
     <DashboardCard>
       <template #raw>
+        <div style="overflow-x: auto;">
         <v-table density="comfortable" hover>
           <thead>
             <tr>
@@ -101,7 +102,7 @@ function confirmResolve() {
               <td>{{ exc.type }}</td>
               <td>{{ exc.since }}</td>
               <td>
-                <StatusChip :color="chipColors[exc.priority]">{{ exc.priority }}</StatusChip>
+                <StatusChip :color="chipColors[exc.priority]">{{ exc.priority.toUpperCase() }}</StatusChip>
               </td>
               <td v-if="filterTab === 'resolved'" class="text-caption text-medium-emphasis" style="max-width: 200px;">
                 {{ exc.note }}
@@ -112,6 +113,7 @@ function confirmResolve() {
             </tr>
           </TransitionGroup>
         </v-table>
+        </div>
       </template>
     </DashboardCard>
 

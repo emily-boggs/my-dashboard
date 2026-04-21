@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { useTheme } from 'vuetify'
-import { ref } from 'vue'
+import { useTheme, useDisplay } from 'vuetify'
+import { ref, computed } from 'vue'
 import ActionBtn from '@/components/ActionBtn.vue'
 
+const emit = defineEmits<{ 'open-nav': [] }>()
 const theme = useTheme()
+const { mobile } = useDisplay()
+const isDark = computed(() => theme.global.current.value.dark)
 
 function toggleTheme() {
-  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+  theme.change(isDark.value ? 'light' : 'dark')
 }
 
 const notifMenu = ref(false)
@@ -35,22 +38,29 @@ function markAllRead() {
 
 <template>
   <v-app-bar flat class="glass-bar" border="b" style="border-color: rgba(var(--v-border-color), 0.06) !important;">
+    <v-app-bar-nav-icon v-if="mobile" @click="emit('open-nav')" />
     <div class="ml-4">
       <div class="text-h6 font-weight-bold" style="letter-spacing: -0.01em;">Dashboard Overview</div>
-      <div class="text-caption text-medium-emphasis">FastForward Logistics — April 20, 2026</div>
+      <div v-if="!mobile" class="text-caption text-medium-emphasis">FastForward Logistics — April 20, 2026</div>
     </div>
 
     <v-spacer />
 
-    <ActionBtn
-      :icon="theme.global.current.value.dark ? 'mdi-weather-night' : 'mdi-weather-sunny'"
-      size="small"
-      @click="toggleTheme"
-    />
+    <div class="theme-toggle" :class="{ 'is-light': !isDark }" @click="toggleTheme" role="switch" :aria-checked="!isDark">
+      <div class="theme-toggle__track">
+        <v-icon class="theme-toggle__icon theme-toggle__icon--sun" size="16">mdi-white-balance-sunny</v-icon>
+        <v-icon class="theme-toggle__icon theme-toggle__icon--moon" size="16">mdi-moon-waning-crescent</v-icon>
+        <div class="theme-toggle__thumb">
+          <v-icon size="14" class="theme-toggle__thumb-icon">
+            {{ isDark ? 'mdi-moon-waning-crescent' : 'mdi-white-balance-sunny' }}
+          </v-icon>
+        </div>
+      </div>
+    </div>
 
     <v-menu v-model="notifMenu" :close-on-content-click="false" offset-y location="bottom end">
       <template #activator="{ props }">
-        <ActionBtn icon size="small" class="ml-2" v-bind="props">
+        <ActionBtn icon class="ml-2 topbar-btn" v-bind="props">
           <v-badge v-if="unreadCount > 0" :content="unreadCount" color="error" floating>
             <v-icon>mdi-bell</v-icon>
           </v-badge>
@@ -84,8 +94,91 @@ function markAllRead() {
       </v-card>
     </v-menu>
 
-    <ActionBtn size="small" prepend-icon="mdi-refresh" class="ml-2 mr-4">
+    <ActionBtn v-if="!mobile" prepend-icon="mdi-refresh" class="ml-2 mr-4 topbar-btn">
       Refresh
+    </ActionBtn>
+    <ActionBtn v-else icon class="ml-2 mr-2 topbar-btn">
+      <v-icon>mdi-refresh</v-icon>
     </ActionBtn>
   </v-app-bar>
 </template>
+
+<style scoped>
+.theme-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+.theme-toggle__track {
+  position: relative;
+  width: 64px;
+  height: 34px;
+  border-radius: 9999px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  border: 1px solid rgba(45, 212, 191, 0.5);
+}
+
+.is-light .theme-toggle__track {
+  background: transparent;
+  border-color: rgba(13, 148, 136, 0.5);
+}
+
+.theme-toggle__icon {
+  color: rgba(255,255,255,0.5);
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+.is-light .theme-toggle__icon {
+  color: rgba(0,0,0,0.35);
+}
+
+.theme-toggle__thumb {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(45, 212, 191, 0.15);
+  border: 1px solid rgba(45, 212, 191, 0.4);
+  top: 50%;
+  transform: translateY(-50%);
+  right: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: right 0.3s ease, left 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  box-shadow: none;
+}
+
+.is-light .theme-toggle__thumb {
+  right: auto;
+  left: 3px;
+  background: rgba(13, 148, 136, 0.15);
+  border-color: rgba(13, 148, 136, 0.4);
+}
+
+.theme-toggle__thumb-icon {
+  color: #2dd4bf;
+  transition: color 0.3s ease;
+}
+
+.is-light .theme-toggle__thumb-icon {
+  color: #0d9488;
+}
+
+.topbar-btn {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+}
+
+.topbar-btn.v-btn--icon {
+  width: 34px !important;
+  min-width: 34px !important;
+}
+</style>

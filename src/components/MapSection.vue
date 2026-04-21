@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import DashboardCard from '@/components/DashboardCard.vue'
 import ActionBtn from '@/components/ActionBtn.vue'
+import worldMapSvg from '@/assets/world-map.svg?raw'
 
 const activeFilter = ref('All')
 const filters = ['All', 'In Transit', 'Delayed', 'Delivered']
@@ -20,14 +21,14 @@ interface Dot {
 }
 
 const dots: Dot[] = [
-  { top: '28%', left: '22%', info: 'CHI → LAX | ETA: 2h', status: 'transit' },
-  { top: '38%', left: '18%', info: 'MIA → NYC | DELAYED', status: 'delayed' },
-  { top: '22%', left: '48%', info: 'LON → PAR | ETA: 45m', status: 'transit' },
-  { top: '32%', left: '55%', info: 'DXB → BOM | ETA: 1h', status: 'transit' },
-  { top: '18%', left: '68%', info: 'PEK → TOK | ETA: 3h', status: 'transit' },
-  { top: '60%', left: '74%', info: 'SYD → MEL | DELIVERED', status: 'delivered' },
-  { top: '25%', left: '14%', info: 'SEA → DEN | ETA: 4h', status: 'transit' },
-  { top: '42%', left: '44%', info: 'CAI → JNB | DELAYED', status: 'delayed' },
+  { top: '24.1%', left: '27.7%', info: 'CHI → LAX | ETA: 2h', status: 'transit' },
+  { top: '34.1%', left: '28.4%', info: 'MIA → NYC | DELAYED', status: 'delayed' },
+  { top: '18.3%', left: '50.0%', info: 'LON → PAR | ETA: 45m', status: 'transit' },
+  { top: '34.4%', left: '64.9%', info: 'DXB → BOM | ETA: 1h', status: 'transit' },
+  { top: '25.3%', left: '79.8%', info: 'PEK → TOK | ETA: 3h', status: 'transit' },
+  { top: '73.4%', left: '87.5%', info: 'SYD → MEL | DELIVERED', status: 'delivered' },
+  { top: '20.6%', left: '19.8%', info: 'SEA → DEN | ETA: 4h', status: 'transit' },
+  { top: '31.4%', left: '58.3%', info: 'CAI → JNB | DELAYED', status: 'delayed' },
 ]
 
 const filteredDots = computed(() => {
@@ -68,30 +69,34 @@ function hideTooltip() {
 <template>
   <DashboardCard title="Live Shipment Tracking" icon="mdi-satellite-uplink">
     <template #actions>
-      <div class="d-flex ga-1">
+      <div class="d-flex ga-1 flex-wrap">
         <ActionBtn
-          v-for="f in filters"
-          :key="f"
-          :variant="activeFilter === f ? 'flat' : 'outlined'"
-          :color="activeFilter === f ? 'primary' : undefined"
-          @click="activeFilter = f"
-        >{{ f }}</ActionBtn>
+          :variant="activeFilter === 'All' ? 'flat' : 'tonal'"
+          color="primary"
+          @click="activeFilter = 'All'"
+        >All</ActionBtn>
+        <ActionBtn
+          :variant="activeFilter === 'In Transit' ? 'flat' : 'tonal'"
+          color="primary"
+          @click="activeFilter = 'In Transit'"
+        ><span class="filter-dot primary-bg"></span>In Transit</ActionBtn>
+        <ActionBtn
+          :variant="activeFilter === 'Delayed' ? 'flat' : 'tonal'"
+          color="primary"
+          @click="activeFilter = 'Delayed'"
+        ><span class="filter-dot warning-bg"></span>Delayed</ActionBtn>
+        <ActionBtn
+          :variant="activeFilter === 'Delivered' ? 'flat' : 'tonal'"
+          color="primary"
+          @click="activeFilter = 'Delivered'"
+        ><span class="filter-dot success-bg"></span>Delivered</ActionBtn>
       </div>
     </template>
 
     <template #raw>
 
     <div class="map-canvas">
-      <svg class="map-svg" viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg">
-        <path class="map-land" d="M80,60 L200,50 L260,80 L280,140 L260,180 L230,200 L200,220 L160,240 L120,230 L90,200 L70,160 L60,120 Z" />
-        <path class="map-land" d="M160,240 L200,220 L220,250 L210,280 L185,290 L165,270 Z" />
-        <path class="map-land" d="M185,290 L230,280 L260,300 L270,360 L250,420 L220,450 L190,440 L170,400 L165,350 L170,310 Z" />
-        <path class="map-land" d="M400,60 L470,55 L490,80 L480,110 L450,120 L420,115 L400,95 Z" />
-        <path class="map-land" d="M420,140 L480,130 L510,160 L520,220 L510,290 L490,330 L460,340 L430,320 L410,270 L405,210 L410,160 Z" />
-        <path class="map-land" d="M490,50 L640,40 L720,60 L750,100 L740,140 L700,160 L650,155 L600,140 L560,120 L510,110 L490,90 Z" />
-        <path class="map-land" d="M640,160 L690,155 L710,180 L700,210 L670,220 L645,200 L635,175 Z" />
-        <path class="map-land" d="M680,300 L760,290 L800,310 L810,360 L790,400 L750,410 L700,395 L675,360 L670,320 Z" />
-      </svg>
+      <div class="map-svg-wrapper" v-html="worldMapSvg"></div>
       <TransitionGroup name="dot">
         <div
           v-for="(dot, i) in filteredDots"
@@ -106,14 +111,6 @@ function hideTooltip() {
       </TransitionGroup>
       <div class="map-tooltip" :style="tooltipStyle">{{ tooltipText }}</div>
     </div>
-
-    <v-divider />
-
-    <div class="d-flex ga-5 pa-3 text-caption text-medium-emphasis">
-      <span class="d-flex align-center ga-1"><span class="legend-dot primary-bg"></span>In Transit</span>
-      <span class="d-flex align-center ga-1"><span class="legend-dot warning-bg"></span>Delayed</span>
-      <span class="d-flex align-center ga-1"><span class="legend-dot success-bg"></span>Delivered</span>
-    </div>
     </template>
   </DashboardCard>
 </template>
@@ -121,12 +118,13 @@ function hideTooltip() {
 <style scoped>
 .map-canvas {
   position: relative;
-  background: rgb(var(--v-theme-surface-variant));
+  background: transparent;
   min-height: 300px;
   overflow: hidden;
 }
-.map-svg { width: 100%; height: 100%; display: block; }
-.map-land { fill: rgba(var(--v-theme-primary), 0.15); stroke: rgba(var(--v-border-color), var(--v-border-opacity)); stroke-width: 0.5; }
+.map-svg-wrapper { width: 100%; height: 100%; display: block; }
+.map-svg-wrapper :deep(svg) { width: 100%; height: 100%; display: block; }
+.map-svg-wrapper :deep(path) { fill: rgba(var(--v-theme-primary), 0.15); stroke: rgba(var(--v-border-color), var(--v-border-opacity)); stroke-width: 0.5; }
 
 .shipment-dot {
   position: absolute;
@@ -183,6 +181,18 @@ function hideTooltip() {
 .legend-dot.primary-bg { background: rgb(var(--v-theme-primary)); }
 .legend-dot.warning-bg { background: rgb(var(--v-theme-warning)); }
 .legend-dot.success-bg { background: rgb(var(--v-theme-success)); }
+
+.filter-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.filter-dot.primary-bg { background: rgb(var(--v-theme-primary)); }
+.filter-dot.warning-bg { background: rgb(var(--v-theme-warning)); }
+.filter-dot.success-bg { background: rgb(var(--v-theme-success)); }
 
 .dot-enter-active, .dot-leave-active { transition: opacity 0.3s ease, transform 0.3s ease; }
 .dot-enter-from, .dot-leave-to { opacity: 0; transform: translate(-50%, -50%) scale(0); }

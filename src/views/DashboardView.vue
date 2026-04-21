@@ -8,28 +8,28 @@ import ShipmentChart from '@/components/ShipmentChart.vue'
 </script>
 
 <template>
-  <v-container fluid class="pa-6">
+  <v-container fluid class="pa-3 pa-sm-6">
     <StatsGrid />
 
-    <v-row class="mt-4">
+    <v-row class="mt-6">
       <v-col cols="12" lg="8">
         <MapSection />
       </v-col>
       <v-col cols="12" lg="4">
-        <div class="d-flex flex-column ga-4">
+        <div class="d-flex flex-column ga-6">
           <DeliveryRates />
           <RegionalPerformance />
         </div>
       </v-col>
     </v-row>
 
-    <v-row class="mt-0">
+    <v-row class="mt-6">
       <v-col cols="12">
         <ExceptionsTable />
       </v-col>
     </v-row>
 
-    <v-row class="mt-0">
+    <v-row class="mt-6">
       <v-col cols="12">
         <ShipmentChart />
       </v-col>

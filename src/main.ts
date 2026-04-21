@@ -52,6 +52,11 @@ const vuetify = createVuetify({
   icons: {
     defaultSet: 'mdi',
   },
+  defaults: {
+    VBtn: {
+      rounded: 'pill',
+    },
+  },
 })
 
 const app = createApp(App)

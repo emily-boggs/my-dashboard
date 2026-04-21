@@ -57,6 +57,7 @@ function confirmResolve() {
       <ActionBtn append-icon="mdi-arrow-right" @click="router.push('/exceptions')">View All</ActionBtn>
     </template>
     <template #raw>
+    <div style="overflow-x: auto;">
     <v-table density="comfortable" hover>
       <thead>
         <tr>
@@ -78,7 +79,7 @@ function confirmResolve() {
           <td>{{ exc.since }}</td>
           <td>
             <StatusChip :color="chipColors[exc.priority]">
-              {{ exc.priority }}
+              {{ exc.priority.toUpperCase() }}
             </StatusChip>
           </td>
           <td>
@@ -89,6 +90,7 @@ function confirmResolve() {
         </tr>
       </TransitionGroup>
     </v-table>
+    </div>
     </template>
   </DashboardCard>
 

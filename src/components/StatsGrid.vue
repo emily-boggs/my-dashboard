@@ -62,8 +62,8 @@ const deltaColors: Record<string, string> = {
             <v-icon size="22">{{ stat.icon }}</v-icon>
           </v-avatar>
           <div>
-            <div class="text-caption text-uppercase text-medium-emphasis font-weight-medium" style="line-height: 1.2; letter-spacing: 0.06em;">{{ stat.label }}</div>
-            <div class="text-h4 font-weight-bold" style="letter-spacing: -0.02em;">{{ displayed[i] }}</div>
+            <div class="text-uppercase text-medium-emphasis font-weight-medium" style="font-size: 0.65rem; line-height: 1.2; letter-spacing: 0.06em;">{{ stat.label }}</div>
+            <div class="font-weight-bold" style="font-size: 2.25rem; letter-spacing: -0.02em; line-height: 1.1;">{{ displayed[i] }}</div>
             <div class="d-flex align-center ga-1" :class="`text-${deltaColors[stat.deltaType]}`" style="font-size: 0.72rem;">
               <v-icon size="14">{{ deltaIcons[stat.deltaType] }}</v-icon>
               {{ stat.delta }}

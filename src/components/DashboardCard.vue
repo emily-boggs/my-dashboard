@@ -11,7 +11,7 @@ defineProps<{
   <v-card variant="flat" :hover="hover" class="glass-card">
     <v-card-title
       v-if="title"
-      class="d-flex align-center justify-space-between py-3 px-4"
+      class="d-flex align-center justify-space-between flex-wrap ga-2 py-3 px-4"
     >
       <span class="d-flex align-center ga-2 text-subtitle-2 font-weight-bold">
         <v-icon v-if="icon" :color="iconColor ?? 'primary'" size="18">{{ icon }}</v-icon>
