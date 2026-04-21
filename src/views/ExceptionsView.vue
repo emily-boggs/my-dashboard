@@ -119,7 +119,7 @@ function confirmResolve() {
 
     <!-- Resolve Dialog -->
     <v-dialog v-model="resolveDialog" max-width="480" persistent>
-      <v-card class="glass-card">
+      <v-card class="glass-card resolve-card">
         <v-card-title class="d-flex align-center ga-2 pt-4">
           <v-icon color="primary">mdi-check-circle</v-icon>
           Resolve Exception
@@ -152,4 +152,9 @@ function confirmResolve() {
 <style scoped>
 .row-leave-active { transition: opacity 0.4s ease, transform 0.4s ease; }
 .row-leave-to { opacity: 0; transform: translateX(20px); }
+.resolve-card {
+  background: rgba(var(--v-theme-surface), 0.92) !important;
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+}
 </style>
