@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
 
-const { mobile } = useDisplay()
+const { smAndDown } = useDisplay()
 const drawer = ref(false)
 const hovered = ref(false)
 const route = useRoute()
@@ -25,7 +25,7 @@ defineExpose({ openDrawer })
 <template>
   <!-- Desktop: rail sidebar -->
   <v-navigation-drawer
-    v-if="!mobile"
+    v-if="!smAndDown"
     :rail="!hovered"
     permanent
     class="glass-sidebar"
@@ -33,7 +33,7 @@ defineExpose({ openDrawer })
     @mouseleave="hovered = false"
     style="transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);"
   >
-    <div class="d-flex align-center pa-4 ga-2" style="height: 56px;">
+    <div class="d-flex align-center pa-4 ga-2" style="height: 56px; cursor: pointer;" @click="router.push('/')">
       <v-icon color="primary" size="24">mdi-truck-fast</v-icon>
       <Transition name="fade">
         <span v-show="hovered" class="text-subtitle-2 font-weight-bold text-primary" style="white-space: nowrap;">FastForward</span>
@@ -78,7 +78,7 @@ defineExpose({ openDrawer })
     temporary
     class="glass-sidebar"
   >
-    <div class="d-flex align-center pa-4 ga-2" style="height: 56px;">
+    <div class="d-flex align-center pa-4 ga-2" style="height: 56px; cursor: pointer;" @click="router.push('/'); drawer = false">
       <v-icon color="primary" size="24">mdi-truck-fast</v-icon>
       <span class="text-subtitle-2 font-weight-bold text-primary">FastForward</span>
     </div>

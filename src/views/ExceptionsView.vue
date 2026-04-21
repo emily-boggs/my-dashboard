@@ -68,7 +68,7 @@ function confirmResolve() {
     <div class="d-flex align-center ga-3 mb-4">
       <v-icon color="warning" size="28">mdi-alert-circle-outline</v-icon>
       <div>
-        <div class="text-h5 font-weight-bold" style="letter-spacing: -0.01em;">Exceptions</div>
+        <div class="font-weight-bold" style="font-size: 1.5rem; letter-spacing: -0.01em;">Exceptions</div>
         <div class="text-body-2 text-medium-emphasis">All open and resolved shipment exceptions</div>
       </div>
     </div>

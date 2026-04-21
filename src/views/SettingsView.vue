@@ -53,7 +53,7 @@ function save() {
     <div class="d-flex align-center ga-3 mb-6">
       <v-icon color="primary" size="28">mdi-cog</v-icon>
       <div>
-        <div class="text-h6 font-weight-bold">Settings</div>
+        <div class="font-weight-bold" style="font-size: 1.5rem; letter-spacing: -0.01em;">Settings</div>
         <div class="text-caption text-medium-emphasis">Application preferences and configuration</div>
       </div>
     </div>

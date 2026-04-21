@@ -5,7 +5,7 @@ import ActionBtn from '@/components/ActionBtn.vue'
 
 const emit = defineEmits<{ 'open-nav': [] }>()
 const theme = useTheme()
-const { mobile } = useDisplay()
+const { smAndDown } = useDisplay()
 const isDark = computed(() => theme.global.current.value.dark)
 
 function toggleTheme() {
@@ -13,6 +13,7 @@ function toggleTheme() {
 }
 
 const notifMenu = ref(false)
+const expandedNotif = ref<number | null>(null)
 
 const notifications = ref([
   { id: 1, icon: 'mdi-alert-circle', color: 'error', title: 'Weather Delay — Chicago', subtitle: 'FF-2026-00412 delayed due to severe storms', time: '12 min ago', read: false },
@@ -34,14 +35,19 @@ function markAllRead() {
   notifications.value.forEach(n => n.read = true)
   unreadCount.value = 0
 }
+
+function toggleNotif(n: typeof notifications.value[0]) {
+  expandedNotif.value = expandedNotif.value === n.id ? null : n.id
+  markRead(n.id)
+}
 </script>
 
 <template>
   <v-app-bar flat class="glass-bar" border="b" style="border-color: rgba(var(--v-border-color), 0.06) !important;">
-    <v-app-bar-nav-icon v-if="mobile" @click="emit('open-nav')" />
+    <v-app-bar-nav-icon v-if="smAndDown" @click="emit('open-nav')" />
     <div class="ml-4">
       <div class="text-h6 font-weight-bold" style="letter-spacing: -0.01em;">Dashboard Overview</div>
-      <div v-if="!mobile" class="text-caption text-medium-emphasis">FastForward Logistics — April 20, 2026</div>
+      <div v-if="!smAndDown" class="text-medium-emphasis" style="font-size: 0.65rem;">FastForward Logistics — April 20, 2026</div>
     </div>
 
     <v-spacer />
@@ -69,7 +75,7 @@ function markAllRead() {
       </template>
 
       <v-card width="360" variant="flat" class="glass-card">
-        <v-card-title class="d-flex align-center justify-space-between py-2 px-4" style="font-size: 0.85rem;">
+        <v-card-title class="d-flex align-center justify-space-between py-2 px-4" style="font-size: 0.8rem;">
           Notifications
           <v-btn variant="text" size="x-small" color="primary" @click="markAllRead">Mark all read</v-btn>
         </v-card-title>
@@ -79,22 +85,23 @@ function markAllRead() {
             v-for="n in notifications"
             :key="n.id"
             :class="{ 'opacity-50': n.read }"
-            @click="markRead(n.id)"
+            class="notif-item"
+            @click="toggleNotif(n)"
           >
             <template #prepend>
-              <v-icon :color="n.color" size="20" class="mr-3">{{ n.icon }}</v-icon>
+              <v-icon :color="n.color" size="16">{{ n.icon }}</v-icon>
             </template>
-            <v-list-item-title class="text-caption font-weight-bold">{{ n.title }}</v-list-item-title>
-            <v-list-item-subtitle class="text-caption">{{ n.subtitle }}</v-list-item-subtitle>
+            <v-list-item-title style="font-size: 0.72rem; font-weight: 600;">{{ n.title }}</v-list-item-title>
+            <v-list-item-subtitle class="notif-subtitle" :class="{ 'notif-subtitle--expanded': expandedNotif === n.id }">{{ n.subtitle }}</v-list-item-subtitle>
             <template #append>
-              <span class="text-caption text-medium-emphasis" style="font-size: 0.65rem; white-space: nowrap;">{{ n.time }}</span>
+              <span class="text-medium-emphasis" style="font-size: 0.6rem; white-space: nowrap;">{{ n.time }}</span>
             </template>
           </v-list-item>
         </v-list>
       </v-card>
     </v-menu>
 
-    <ActionBtn v-if="!mobile" prepend-icon="mdi-refresh" class="ml-2 mr-4 topbar-btn">
+    <ActionBtn v-if="!smAndDown" prepend-icon="mdi-refresh" class="ml-2 mr-4 topbar-btn">
       Refresh
     </ActionBtn>
     <ActionBtn v-else icon class="ml-2 mr-2 topbar-btn">
@@ -180,5 +187,23 @@ function markAllRead() {
 .topbar-btn.v-btn--icon {
   width: 34px !important;
   min-width: 34px !important;
+}
+
+.notif-item :deep(.v-list-item__prepend) {
+  width: 24px !important;
+  min-width: 24px !important;
+  margin-inline-end: 0px !important;
+  flex-shrink: 0;
+}
+
+.notif-subtitle {
+  font-size: 0.68rem !important;
+}
+
+.notif-subtitle--expanded {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  -webkit-line-clamp: unset !important;
 }
 </style>
